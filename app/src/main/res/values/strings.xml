@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Messenger</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Сообщения</string>
+    <string name="menu_sing_in">Вход</string>
+    <string name="menu_register">Регистрация</string>
+    <string name="menu_back">Назад</string>
+    <string name="password">Пароль</string>
+    <string name="login">Логин</string>
+    <string name="email">Емайл</string>
+    <string name="tmp"> </string>
+    <string name="rep_pass">Повторите пароль</string>
+</resources>
