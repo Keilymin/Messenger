@@ -16,4 +16,6 @@
     <string name="email">Емайл</string>
     <string name="tmp"> </string>
     <string name="rep_pass">Повторите пароль</string>
+    <string name="cancel">Отмена</string>
+    <string name="ok">Принять</string>
 </resources>
