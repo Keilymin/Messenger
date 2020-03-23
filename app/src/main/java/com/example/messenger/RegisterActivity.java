@@ -68,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("Log", "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
-
+                                        startSingInActivity();
                                         // updateUI(user);
                                     } else {
                                         // If sign in fails, display a message to the user.
