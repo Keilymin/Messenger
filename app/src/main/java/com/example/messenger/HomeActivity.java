@@ -23,7 +23,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseAuth mAuth;
@@ -45,7 +45,7 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home)
+                R.id.nav_home,R.id.nav_settings,R.id.nav_logout)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -58,17 +58,21 @@ public class HomeActivity extends AppCompatActivity {
         super.onStart();
 
         // Check if user is signed in (non-null) and update UI accordingly.
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        assert currentUser != null;
-        if(currentUser.getDisplayName() == null){
-           DialogFragment dialog = new UsernameDialog();
-           dialog.show(getSupportFragmentManager(),"dia");
+        if(currentUser != null) {
+            if (currentUser.getDisplayName() == null) {
+                DialogFragment dialog = new UsernameDialog();
+                dialog.show(getSupportFragmentManager(), "dia");
 
-        }
-        else {
-            updateUI(currentUser);
+            } else {
+                updateUI(currentUser);
 
+            }
+        }else {
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
         }
     }
 
@@ -87,5 +91,16 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+
+        }
+    }
+    void backToMainActivity(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 }

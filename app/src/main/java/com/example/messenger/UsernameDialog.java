@@ -12,11 +12,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -64,7 +61,7 @@ public class UsernameDialog extends DialogFragment  {
     @Override
     public void onStart() {
         super.onStart();
-        userName =   getDialog().findViewById(R.id.username);
+        userName =   getDialog().findViewById(R.id.new_password);
         mAuth = FirebaseAuth.getInstance();
     }
 
