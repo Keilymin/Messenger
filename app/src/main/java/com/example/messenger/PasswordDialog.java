@@ -93,14 +93,6 @@ public class PasswordDialog extends DialogFragment  {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             user.updatePassword(newPassword.getText().toString());
-                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                            DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid());
-                            HashMap<String,String> hashMap = new HashMap<>();
-                            hashMap.put("id",mAuth.getUid());
-                            hashMap.put("email",user.getEmail());
-                            hashMap.put("name",user.getDisplayName());
-                            hashMap.put("image","def");
-                            myRef.setValue(hashMap);
                             state.setText("Пароль сменен");
                             state.setTextColor(Color.GREEN);
                         } else {

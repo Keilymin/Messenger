@@ -79,12 +79,9 @@ public class UsernameDialog extends DialogFragment  {
             user.updateProfile(profileUpdate);
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid());
-            HashMap<String,String> hashMap = new HashMap<>();
-            hashMap.put("id",mAuth.getUid());
-            hashMap.put("email",user.getEmail());
+            HashMap<String,Object> hashMap = new HashMap<>();
             hashMap.put("name",userName.getText().toString());
-            hashMap.put("image","def");
-            myRef.setValue(hashMap);
+            myRef.updateChildren(hashMap);
             NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
             View hView =  navigationView.getHeaderView(0);
             TextView textEmail = hView.findViewById(R.id.text_email);

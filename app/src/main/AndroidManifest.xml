@@ -39,6 +39,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
+            android:name=".chat.ChatActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
             android:name=".UsernameDialog"
             android:theme="@android:style/Theme.Holo.Dialog" >
     </activity>
