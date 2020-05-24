@@ -16,6 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
@@ -68,6 +73,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d("Log", "createUserWithEmail:success");
                                         FirebaseUser user = mAuth.getCurrentUser();
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid());
+                                        HashMap<String,String> hashMap = new HashMap<>();
+                                        hashMap.put("id",mAuth.getUid());
+                                        hashMap.put("email",email.getText().toString());
+                                        hashMap.put("name","");
+                                        hashMap.put("image","def");
+                                        myRef.setValue(hashMap);
                                         startSingInActivity();
                                         // updateUI(user);
                                     } else {

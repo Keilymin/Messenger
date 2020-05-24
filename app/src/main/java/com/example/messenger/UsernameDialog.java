@@ -18,6 +18,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class UsernameDialog extends DialogFragment  {
     private FirebaseAuth mAuth;
@@ -73,7 +77,14 @@ public class UsernameDialog extends DialogFragment  {
                     .setDisplayName(userName.getText().toString())
                     .build();
             user.updateProfile(profileUpdate);
-
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid());
+            HashMap<String,String> hashMap = new HashMap<>();
+            hashMap.put("id",mAuth.getUid());
+            hashMap.put("email",user.getEmail());
+            hashMap.put("name",userName.getText().toString());
+            hashMap.put("image","def");
+            myRef.setValue(hashMap);
             NavigationView navigationView = getActivity().findViewById(R.id.nav_view);
             View hView =  navigationView.getHeaderView(0);
             TextView textEmail = hView.findViewById(R.id.text_email);

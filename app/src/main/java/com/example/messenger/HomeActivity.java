@@ -1,10 +1,12 @@
 package com.example.messenger;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
@@ -13,10 +15,16 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -29,6 +37,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseAuth mAuth;
     private TextView textEmail;
     private TextView textLogin;
+    private ImageView imageView;
+    private String image = "111";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +52,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         View hView =  navigationView.getHeaderView(0);
         textEmail = hView.findViewById(R.id.text_email);
         textLogin = hView.findViewById(R.id.text_login);
+        imageView = hView.findViewById(R.id.imageView);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -75,11 +86,38 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
     }
-
+    Context tgetContext(){
+        return this;
+    }
      void updateUI(FirebaseUser currentUser){
 
         textEmail.setText(currentUser.getEmail());
         textLogin.setText(currentUser.getDisplayName());
+         FirebaseDatabase database = FirebaseDatabase.getInstance();
+         DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid()).child("image");
+
+         myRef.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(DataSnapshot dataSnapshot) {
+                 // This method is called once with the initial value and again
+                 // whenever data at this location is updated.
+                  image = dataSnapshot.getValue(String.class);
+                 if(image.equals("def")){
+                     imageView.setImageResource(R.mipmap.ic_launcher);
+                 } else {
+                     Glide.with(tgetContext()).load(image).into(imageView);
+                 }
+
+             }
+
+             @Override
+             public void onCancelled(DatabaseError error) {
+                 imageView.setImageResource(R.mipmap.ic_launcher);
+
+             }
+         });
+
+
     }
     @Override
     public boolean onSupportNavigateUp() {
