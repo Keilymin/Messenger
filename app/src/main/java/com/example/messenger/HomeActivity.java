@@ -31,13 +31,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AppBarConfiguration mAppBarConfiguration;
     private FirebaseAuth mAuth;
     private TextView textEmail;
     private TextView textLogin;
-    private ImageView imageView;
+    private CircleImageView imageView;
     private String image = "111";
     @Override
     protected void onCreate(Bundle savedInstanceState) {

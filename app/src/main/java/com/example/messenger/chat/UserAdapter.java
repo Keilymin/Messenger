@@ -18,6 +18,8 @@ import com.example.messenger.entity.User;
 import java.util.List;
 import java.util.zip.Inflater;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
     private List<User> mUsers;
@@ -63,7 +65,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
-        public ImageView image;
+        public CircleImageView image;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
