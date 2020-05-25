@@ -34,10 +34,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ChatActivity extends AppCompatActivity {
     ImageButton send;
     EditText message;
-    ImageView avatar;
+    CircleImageView avatar;
     TextView nickname;
     FirebaseUser mUser;
     DatabaseReference ref;
