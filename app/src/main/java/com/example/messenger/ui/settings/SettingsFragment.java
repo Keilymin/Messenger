@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,11 +30,11 @@ public class SettingsFragment extends Fragment implements View.OnClickListener {
                              ViewGroup container, Bundle savedInstanceState) {
 
         root = inflater.inflate(R.layout.fragment_settings, container, false);
-        Button changeName = root.findViewById(R.id.buttonChangeName);
+        ImageButton changeName = root.findViewById(R.id.buttonChangeName);
         changeName.setOnClickListener(this);
-        Button changePass = root.findViewById(R.id.buttonChangePass);
+        ImageButton changePass = root.findViewById(R.id.buttonChangePass);
         changePass.setOnClickListener(this);
-        Button changeAvatar = root.findViewById(R.id.avatar);
+        ImageButton changeAvatar = root.findViewById(R.id.avatar);
         changeAvatar.setOnClickListener(this);
         return root;
     }
