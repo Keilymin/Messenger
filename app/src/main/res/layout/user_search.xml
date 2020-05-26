@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="normal"
         android:id="@+id/editText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

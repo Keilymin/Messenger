@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private Button register = null;
-    private Button back = null;
+
 
     private EditText email = null;
     private EditText password = null;
@@ -35,15 +36,24 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         register = findViewById(R.id.register);
         mAuth = FirebaseAuth.getInstance();
-        back = findViewById(R.id.back);
+
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         reply_password = findViewById(R.id.reply_password);
         register.setOnClickListener(this);
-        back.setOnClickListener(this);
+
 
 
 
@@ -81,12 +91,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         hashMap.put("name","");
                                         hashMap.put("image","def");
                                         myRef.setValue(hashMap);
+                                        user.sendEmailVerification()
+                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                    }
+                                                });
                                         startSingInActivity();
                                         // updateUI(user);
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w("Log", "createUserWithEmail:failure", task.getException());
-                                        Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                        Toast.makeText(RegisterActivity.this, "Ошибка.",
                                                 Toast.LENGTH_SHORT).show();
                                         //updateUI(null);
                                     }

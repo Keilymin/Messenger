@@ -64,6 +64,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         userList = new ArrayList<>();
         ref = FirebaseDatabase.getInstance().getReference("Chats");
+        if(user != null)
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -116,7 +117,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Set<User> set = new HashSet<>(mUsers);
                 mUsers.clear();
                 mUsers.addAll(set);
-                userAdapter = new UserAdapter(getContext(), mUsers);
+                userAdapter = new UserAdapter(getContext(), mUsers,true);
                 recyclerView.setAdapter(userAdapter);
             }
 

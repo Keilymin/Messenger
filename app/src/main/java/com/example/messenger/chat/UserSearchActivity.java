@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserSearchActivity extends AppCompatActivity implements Button.OnClickListener{
@@ -41,6 +42,7 @@ public class UserSearchActivity extends AppCompatActivity implements Button.OnCl
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.user_search);
+            mAuth = FirebaseAuth.getInstance();
             recyclerView = findViewById(R.id.list);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -99,7 +101,7 @@ public class UserSearchActivity extends AppCompatActivity implements Button.OnCl
                         }
                     }
                 }
-                userAdapter = new UserAdapter(tgetContext(),mUsers);
+                userAdapter = new UserAdapter(tgetContext(),mUsers,false);
                 recyclerView.setAdapter(userAdapter);
             }
 
@@ -123,5 +125,26 @@ public class UserSearchActivity extends AppCompatActivity implements Button.OnCl
     private void backTohome(){
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
+    }
+    private void setStatus(String status){
+        if(mAuth.getCurrentUser() != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            myRef.updateChildren(hashMap);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatus("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setStatus("offline");
     }
 }

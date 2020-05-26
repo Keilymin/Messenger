@@ -23,10 +23,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
     private List<User> mUsers;
+    private boolean isChat;
 
-    public UserAdapter(Context mContext, List<User> mUsers){
+    public UserAdapter(Context mContext, List<User> mUsers, boolean isChat){
         this.mUsers = mUsers;
         this.mContext = mContext;
+        this.isChat = isChat;
     }
 
     @NonNull
@@ -45,6 +47,18 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             holder.image.setImageResource(R.mipmap.ic_launcher);
         } else {
             Glide.with(mContext).load(user.getImage()).into(holder.image);
+        }
+        if(isChat){
+            if(user.getStatus().equals("online")){
+                holder.online.setVisibility(View.VISIBLE);
+                holder.offline.setVisibility(View.GONE);
+            }else {
+                holder.online.setVisibility(View.GONE);
+                holder.offline.setVisibility(View.VISIBLE);
+            }
+        } else {
+            holder.online.setVisibility(View.GONE);
+            holder.offline.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -66,11 +80,15 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView username;
         public CircleImageView image;
+        private ImageView online;
+        private ImageView offline;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             username = itemView.findViewById(R.id.username);
             image = itemView.findViewById(R.id.image);
+            online = itemView.findViewById(R.id.online);
+            offline = itemView.findViewById(R.id.offline);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.messenger.chat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,7 +31,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -43,11 +47,13 @@ public class ChatActivity extends AppCompatActivity {
     TextView nickname;
     FirebaseUser mUser;
     DatabaseReference ref;
-
+    FirebaseAuth mAuth;
     MessageAdapter messageAdapter;
     List<Message> mMessage;
     RecyclerView list;
     Intent intent;
+    ValueEventListener seenListener;
+    String id;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +66,7 @@ public class ChatActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ref.removeEventListener(seenListener);
                 finish();
             }
         });
@@ -75,7 +82,7 @@ public class ChatActivity extends AppCompatActivity {
         message = findViewById(R.id.message);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         intent = getIntent();
-        final String id = intent.getStringExtra("userId");
+        id = intent.getStringExtra("userId");
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,10 +106,33 @@ public class ChatActivity extends AppCompatActivity {
                 if(user.getImage().equals("def")){
                     avatar.setImageResource(R.mipmap.ic_launcher);
                 } else {
-                    Glide.with(ChatActivity.this).load(user.getImage()).into(avatar);
+                    Glide.with(getApplicationContext()).load(user.getImage()).into(avatar);
                 }
 
                 readMessage(mUser.getUid(),id);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void seenMessage(final String userid){
+        ref = FirebaseDatabase.getInstance().getReference("Chats");
+        seenListener = ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Message message = snapshot.getValue(Message.class);
+                    if(message.getReciever().equals(mUser.getUid()) && message.getSender().equals(userid)){
+                        HashMap<String,Object> hashMap = new HashMap<>();
+                        hashMap.put("isseen",true);
+                        snapshot.getRef().updateChildren(hashMap);
+                    }
+                }
             }
 
             @Override
@@ -119,6 +149,9 @@ public class ChatActivity extends AppCompatActivity {
         hashMap.put("sender",sender);
         hashMap.put("reciever",reciever);
         hashMap.put("message",message);
+        hashMap.put("isseen",false);
+        @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
+        hashMap.put("date", timeStamp);
 
         reference.child("Chats").push().setValue(hashMap);
     }
@@ -150,5 +183,35 @@ public class ChatActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void setStatus(String status){
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth.getCurrentUser() != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            myRef.updateChildren(hashMap);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+            seenMessage(id);
+
+        setStatus("online");
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        if (seenListener != null && ref!=null) {
+            ref.removeEventListener(seenListener);
+        }
+        super.onPause();
+        setStatus("offline");
     }
 }

@@ -31,6 +31,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
@@ -88,9 +90,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         }
     }
-    Context tgetContext(){
-        return this;
-    }
+    
      void updateUI(FirebaseUser currentUser){
 
         textEmail.setText(currentUser.getEmail());
@@ -107,7 +107,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                  if(image.equals("def")){
                      imageView.setImageResource(R.mipmap.ic_launcher);
                  } else {
-                     Glide.with(tgetContext()).load(image).into(imageView);
+                     Glide.with(getApplicationContext()).load(image).into(imageView);
                  }
 
              }
@@ -142,5 +142,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     void backToMainActivity(){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    private void setStatus(String status){
+        if(mAuth.getCurrentUser() != null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference myRef = database.getReference("Users").child(mAuth.getUid());
+            HashMap<String,Object> hashMap = new HashMap<>();
+            hashMap.put("status",status);
+            myRef.updateChildren(hashMap);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setStatus("online");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setStatus("offline");
     }
 }

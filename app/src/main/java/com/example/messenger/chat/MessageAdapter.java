@@ -52,6 +52,12 @@ if(viewType == MSG_RIGHT) {
     public void onBindViewHolder(@NonNull MessageAdapter.ViewHolder holder, int position) {
         Message message = mMessage.get(position);
         holder.chatMessage.setText(message.getMessage());
+        if(getItemViewType(position) == 1)
+        if(message.isIsseen()){
+
+            holder.seen.setImageResource(R.drawable.seen);
+        }
+        holder.time.setText(message.getDate());
     }
 
 
@@ -63,12 +69,15 @@ if(viewType == MSG_RIGHT) {
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView chatMessage;
+        public TextView time;
+        public  ImageView seen;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             chatMessage = itemView.findViewById(R.id.message);
-
+            seen = itemView.findViewById(R.id.noseen);
+            time = itemView.findViewById(R.id.time);
         }
     }
 

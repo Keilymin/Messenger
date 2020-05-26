@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class SingInActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private Button singIn = null;
-    private Button back = null;
+
     private EditText password = null;
     private EditText email = null;
 
@@ -28,12 +29,21 @@ public class SingInActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sing_in_activity);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         singIn = findViewById(R.id.sing_in);
-        back = findViewById(R.id.back);
+
         password = findViewById(R.id.password);
         email = findViewById(R.id.email);
         singIn.setOnClickListener(this);
-        back.setOnClickListener(this);
+
         mAuth = FirebaseAuth.getInstance();
     }
 
@@ -55,10 +65,17 @@ public class SingInActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("S", "signInWithEmail:success");
+
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startHomeActivity();
+                            if(user.isEmailVerified()) {
+                                Log.d("S", "signInWithEmail:success");
+                                startHomeActivity();
+                            }else {
+                                Toast.makeText(SingInActivity.this, "Подтвердите эмейл",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("S", "signInWithEmail:failure", task.getException());
