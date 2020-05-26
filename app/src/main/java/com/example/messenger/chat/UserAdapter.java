@@ -13,7 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.messenger.R;
+import com.example.messenger.entity.Message;
 import com.example.messenger.entity.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 import java.util.zip.Inflater;
@@ -24,6 +32,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private Context mContext;
     private List<User> mUsers;
     private boolean isChat;
+
+    String lastMSG;
 
     public UserAdapter(Context mContext, List<User> mUsers, boolean isChat){
         this.mUsers = mUsers;
@@ -48,7 +58,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         } else {
             Glide.with(mContext).load(user.getImage()).into(holder.image);
         }
+
         if(isChat){
+            getLastMess(user.getId(),holder.last_mess);
             if(user.getStatus().equals("online")){
                 holder.online.setVisibility(View.VISIBLE);
                 holder.offline.setVisibility(View.GONE);
@@ -57,6 +69,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 holder.offline.setVisibility(View.VISIBLE);
             }
         } else {
+            holder.last_mess.setVisibility(View.GONE);
             holder.online.setVisibility(View.GONE);
             holder.offline.setVisibility(View.GONE);
         }
@@ -82,6 +95,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         public CircleImageView image;
         private ImageView online;
         private ImageView offline;
+        private TextView last_mess;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -89,10 +103,37 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             image = itemView.findViewById(R.id.image);
             online = itemView.findViewById(R.id.online);
             offline = itemView.findViewById(R.id.offline);
+            last_mess = itemView.findViewById(R.id.last_mess);
         }
     }
 
+    private void getLastMess(final String userId, final TextView last_mess){
+        lastMSG = "Пусто";
 
+        final FirebaseUser fuser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    Message message = snapshot.getValue(Message.class);
+                    if (message.getReciever().equals(fuser.getUid()) && message.getSender().equals(userId)){
+                        lastMSG = "Вам: "+message.getMessage();
+                    }else if (message.getReciever().equals(userId) && message.getSender().equals(fuser.getUid())){
+                        lastMSG = "Вы: "+message.getMessage();
+                    }
+                }
+                last_mess.setText(lastMSG);
+
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
 }

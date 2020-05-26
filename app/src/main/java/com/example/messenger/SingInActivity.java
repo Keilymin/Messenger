@@ -6,11 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,7 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class SingInActivity extends AppCompatActivity implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private Button singIn = null;
-
+    private TextView pass_forgot;
     private EditText password = null;
     private EditText email = null;
 
@@ -39,7 +41,8 @@ public class SingInActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
         singIn = findViewById(R.id.sing_in);
-
+        pass_forgot = findViewById(R.id.pass_forgot);
+        pass_forgot.setOnClickListener(this);
         password = findViewById(R.id.password);
         email = findViewById(R.id.email);
         singIn.setOnClickListener(this);
@@ -55,6 +58,10 @@ public class SingInActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.back:
                 backToMainActivity();
+                break;
+            case R.id.pass_forgot:
+                DialogFragment dialog = new ForgotPasswordDialog();
+                dialog.show(getSupportFragmentManager(), "dia");
                 break;
         }
     }
