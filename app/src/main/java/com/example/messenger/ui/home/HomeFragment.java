@@ -23,6 +23,7 @@ import com.example.messenger.chat.UserAdapter;
 import com.example.messenger.chat.UserSearchActivity;
 import com.example.messenger.entity.Message;
 import com.example.messenger.entity.User;
+import com.example.messenger.notif.Token;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -91,6 +93,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        updateToken(FirebaseInstanceId.getInstance().getToken());
         return root;
     }
     private void readChats() {
@@ -128,6 +131,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             }
         });
+    }
+    private void updateToken(String token){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
+        Token token1 = new Token(token);
+        reference.child(user.getUid()).setValue(token1);
     }
 
     @Override
