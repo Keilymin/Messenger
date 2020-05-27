@@ -7,10 +7,7 @@ public class Message {
     private String message;
     private boolean isseen;
     private String date;
-
-
-    public Message() {
-    }
+    private String id;
 
     public Message(String sender, String reciever, String message, boolean isseen, String date) {
         this.sender = sender;
@@ -18,6 +15,18 @@ public class Message {
         this.message = message;
         this.isseen = isseen;
         this.date = date;
+    }
+
+    public Message(String sender, String reciever, String message, boolean isseen, String date, String id) {
+        this.sender = sender;
+        this.reciever = reciever;
+        this.message = message;
+        this.isseen = isseen;
+        this.date = date;
+        this.id = id;
+    }
+
+    public Message() {
     }
 
     public String getSender() {
@@ -58,5 +67,13 @@ public class Message {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

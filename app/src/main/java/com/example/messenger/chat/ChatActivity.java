@@ -243,7 +243,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void  readMessage(final String myId, final String userId){
         mMessage = new ArrayList<>();
-
+        DatabaseReference re = FirebaseDatabase.getInstance().getReference("Chats");
         ref = FirebaseDatabase.getInstance().getReference("Chats");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -254,7 +254,10 @@ public class ChatActivity extends AppCompatActivity {
 
                     if(message.getReciever().equals(myId) && message.getSender().equals(userId)
                             || message.getReciever().equals(userId) && message.getSender().equals(myId)){
+                        message.setId(snapshot.getKey());
                         mMessage.add(message);
+
+
                     }
                     messageAdapter = new MessageAdapter(ChatActivity.this,mMessage);
 
