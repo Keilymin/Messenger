@@ -65,7 +65,7 @@ public class ChatActivity extends AppCompatActivity {
     ValueEventListener seenListener;
     String id;
     APIService apiService;
-
+    String stat;
     boolean notify = false;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,7 +110,18 @@ public class ChatActivity extends AppCompatActivity {
                 message.setText("");
             }
         });
+        DatabaseReference rf = FirebaseDatabase.getInstance().getReference("Users").child(id).child("status");
+        rf.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                 stat = dataSnapshot.getValue(String.class);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         ref = FirebaseDatabase.getInstance().getReference("Users").child(id);
 
         ref.addValueEventListener(new ValueEventListener() {
@@ -177,7 +188,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
-                if (notify) {
+
+                if (notify && stat.equals("offline")) {
                     sendNotifiaction(reciever, user.getName(), msg);
                 }
                 notify = false;
