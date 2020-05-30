@@ -91,7 +91,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-
+        if(user != null)
         updateToken(FirebaseInstanceId.getInstance().getToken());
         return root;
     }

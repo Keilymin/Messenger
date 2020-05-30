@@ -149,12 +149,14 @@ public class HomeActivity extends AppCompatActivity  {
     @Override
     protected void onResume() {
         super.onResume();
+        if(mAuth.getCurrentUser()!=null)
         setStatus("online");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if(mAuth.getCurrentUser()!=null)
         setStatus("offline");
     }
 }
