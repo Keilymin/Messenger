@@ -12,6 +12,7 @@ import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,23 +32,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class UserSearchActivity extends AppCompatActivity implements Button.OnClickListener{
+public class UserSearchActivity extends AppCompatActivity {
         private FirebaseAuth mAuth;
         private RecyclerView recyclerView;
         private  UserAdapter userAdapter;
         private List<User> mUsers;
-        private  Button back;
+
         private EditText editText;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.user_search);
             mAuth = FirebaseAuth.getInstance();
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
             recyclerView = findViewById(R.id.list);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            back = findViewById(R.id.back);
-            back.setOnClickListener(this);
+
             mUsers = new ArrayList<>();
             editText = findViewById(R.id.editText);
             editText.addTextChangedListener(new TextWatcher() {
@@ -114,18 +123,8 @@ public class UserSearchActivity extends AppCompatActivity implements Button.OnCl
     Context tgetContext(){
         return this;
     }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.back:
-                backTohome();
-                break;
-        }
-    }
-    private void backTohome(){
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-    }
+
+
     private void setStatus(String status){
         if(mAuth.getCurrentUser() != null) {
             FirebaseDatabase database = FirebaseDatabase.getInstance();

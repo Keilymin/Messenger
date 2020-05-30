@@ -66,9 +66,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             case R.id.register:
                 register();
                 break;
-            case R.id.back:
-                backToMainActivity();
-                break;
         }
     }
     void register(){
