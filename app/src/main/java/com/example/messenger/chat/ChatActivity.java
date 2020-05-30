@@ -2,6 +2,7 @@ package com.example.messenger.chat;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -67,7 +68,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_activity);
-
+        getWindow().setBackgroundDrawableResource(R.drawable.background_034);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
@@ -85,7 +86,6 @@ public class ChatActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         list.setLayoutManager(linearLayoutManager);
-
         avatar = findViewById(R.id.avatar);
         nickname = findViewById(R.id.nickname);
         send = findViewById(R.id.send);

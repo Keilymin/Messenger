@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.messenger">
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -40,7 +41,9 @@
         </activity>
         <activity
             android:name=".chat.ChatActivity"
-            android:theme="@style/AppTheme.NoActionBar2">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar2"
+            tools:ignore="LockedOrientationActivity">
         </activity>
         <activity
             android:name=".UsernameDialog"
