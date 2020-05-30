@@ -40,7 +40,6 @@ import java.util.Set;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-    private HomeViewModel homeViewModel;
     private Button newChatButton;
     private View root;
     private RecyclerView recyclerView;

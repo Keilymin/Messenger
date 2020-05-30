@@ -56,9 +56,6 @@ public class SingInActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.sing_in:
                 singIn();
                 break;
-            case R.id.back:
-                backToMainActivity();
-                break;
             case R.id.pass_forgot:
                 DialogFragment dialog = new ForgotPasswordDialog();
                 dialog.show(getSupportFragmentManager(), "dia");
@@ -99,8 +96,5 @@ public class SingInActivity extends AppCompatActivity implements View.OnClickLis
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
-    void backToMainActivity(){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
+
 }
