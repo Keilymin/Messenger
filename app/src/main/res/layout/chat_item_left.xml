@@ -13,9 +13,11 @@
         android:id="@+id/linearLayout4"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -39,6 +41,7 @@
                 android:text="Привет"
                 android:textColor="#0B0A0A"
                 android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/time"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
