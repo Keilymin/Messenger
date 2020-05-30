@@ -135,6 +135,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private void updateToken(String token){
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tokens");
         Token token1 = new Token(token);
+        if(user != null)
         reference.child(user.getUid()).setValue(token1);
     }
 
