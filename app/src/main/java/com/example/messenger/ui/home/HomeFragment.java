@@ -116,9 +116,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     }
                 }
 
-                Set<User> set = new HashSet<>(mUsers);
-                mUsers.clear();
-                mUsers.addAll(set);
+                //Set<User> set = new HashSet<>(mUsers);
+                //mUsers.clear();
+                //mUsers.addAll(set);
                 userAdapter = new UserAdapter(getContext(), mUsers,true);
                 recyclerView.setAdapter(userAdapter);
             }

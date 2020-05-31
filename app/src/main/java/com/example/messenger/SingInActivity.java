@@ -77,7 +77,7 @@ public class SingInActivity extends AppCompatActivity implements View.OnClickLis
                                 Log.d("S", "signInWithEmail:success");
                                 startHomeActivity();
                             }else {
-                                Toast.makeText(SingInActivity.this, "Подтвердите эмейл",
+                                Toast.makeText(SingInActivity.this, "Подтвердите email",
                                         Toast.LENGTH_SHORT).show();
                             }
                         } else {

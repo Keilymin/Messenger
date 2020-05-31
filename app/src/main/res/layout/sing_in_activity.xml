@@ -63,7 +63,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:ems="10"
-        android:hint="Эмайл"
+        android:hint="Email"
         android:inputType="textEmailAddress"
         android:text="@string/tmp"
         app:layout_constraintEnd_toEndOf="parent"

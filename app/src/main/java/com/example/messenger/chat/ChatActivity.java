@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.messenger.HomeActivity;
 import com.example.messenger.R;
 import com.example.messenger.entity.Message;
 import com.example.messenger.entity.User;
@@ -77,7 +78,8 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ref.removeEventListener(seenListener);
-                finish();
+                Intent intent = new Intent(ChatActivity.this, HomeActivity.class);
+                startActivity(intent);
             }
         });
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
@@ -205,7 +207,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Token token = snapshot.getValue(Token.class);
-                    Data data = new Data(mUser.getUid(), R.mipmap.ic_launcher, username+": "+message, "Новое сообщение",
+                    Data data = new Data(mUser.getUid(), R.drawable.cat_paw, username+": "+message, "Новое сообщение",
                             id);
 
                     Sender sender = new Sender(data, token.getToken());
